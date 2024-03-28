@@ -61,12 +61,12 @@ def compute_metrics(params: dict)-> List[dict]:
     """
     
     # Load audios
-    speech = librosa.load(params['speech_path'], sr=None, mono=False)[0][[0, 2]]
-    noise = librosa.load(params['noise_path'], sr=None, mono=False)[0][[0, 2]]
-    mixture = librosa.load(params['mixture_path'], sr=None, mono=False)[0][[0, 2]]
+    speech               = librosa.load(params['speech_path'], sr=None, mono=False)[0][[0, 2]]
+    noise                = librosa.load(params['noise_path'], sr=None, mono=False)[0][[0, 2]]
+    mixture              = librosa.load(params['mixture_path'], sr=None, mono=False)[0][[0, 2]]
     estimated_speech_ch0 = librosa.load(params['estimated_speech_path_ch0'], sr=None, mono=False)[0]
     estimated_speech_ch2 = librosa.load(params['estimated_speech_path_ch2'], sr=None, mono=False)[0]
-    estimated_speech = np.vstack((estimated_speech_ch0, estimated_speech_ch2))
+    estimated_speech     = np.vstack((estimated_speech_ch0, estimated_speech_ch2))
 
     # Prepare reference and estimated source matrics for metric computation
     reference      = np.vstack([speech, noise])
