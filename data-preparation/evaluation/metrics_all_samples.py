@@ -22,14 +22,14 @@ import pandas as pd
 from metrics import compute_metrics  
 
 
-def extract_filenames(clean_path: str, gender: str) -> List[str]:
+def extract_filenames(dataset_path: str, gender: str) -> List[str]:
     """
     Extracts and returns a list of filenames without their directory paths and file extensions.
 
     Parameters
     ----------
-    clean_path : str
-        The base path to the clean dataset containing clean audio files organized by gender.
+    dataset_path : str
+        The base path to the dataset containing audio files organized by gender, noise type, and scenario.
     gender : str
         The gender of the speaker in the audio samples ('male' or 'female').
 
@@ -46,7 +46,7 @@ def extract_filenames(clean_path: str, gender: str) -> List[str]:
     ["filename1", "filename2", "filename3"]
     """
     # Use glob to match the file pattern and extract base filenames without extension
-    clean_files = os.path.join(clean_path, gender, '*.wav')
+    clean_files = os.path.join(dataset_path, 'clean', gender, '*.wav')
     filenames = [file.split('/')[-1].replace('.wav', '') for file in glob.glob(clean_files)]
     return filenames
 
@@ -108,8 +108,8 @@ def process_all_cases(dataset_path: str, gender: str, noise_type: str, scenario:
 
 if __name__ == "__main__":
     
-    clean_path = f'/srv/storage/talc3@storage4.nancy.grid5000.fr/multispeech/calcul/users/nmonir/se-ph-eval-plus/clean'
-    filenames = extract_filenames(clean_path, gender='female')[:3]
+    dataset_path = '/srv/storage/talc3@storage4.nancy.grid5000.fr/multispeech/calcul/users/nmonir/se-ph-eval-plus'
+    filenames = extract_filenames(dataset_path, gender='female')
     
     metrics_summary = process_all_cases(
                         gender='female', 
@@ -117,6 +117,6 @@ if __name__ == "__main__":
                         scenario='0dBS0N45', 
                         model='tango', 
                         samples=filenames,
-                        dataset_path='/srv/storage/talc3@storage4.nancy.grid5000.fr/multispeech/calcul/users/nmonir/se-ph-eval-plus', 
+                        dataset_path=dataset_path, 
                         )
     print(pd.DataFrame(metrics_summary))
