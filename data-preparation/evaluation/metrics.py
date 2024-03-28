@@ -8,6 +8,7 @@ Update: 28.03.2024
 # import standard libraries
 import os
 import sys
+import json
 from typing import List
 
 # import third-party libraries
@@ -16,9 +17,9 @@ import numpy as np
 from mir_eval.separation import bss_eval_images
 
 # Compute metrics 
-def compute_metrics(params: dict)-> List[dict]:
+def compute_utterance_level_metrics(params: dict)-> List[dict]:
     """
-    Calculate multichannel speech enhancement metrics at the input stage, the output stage and the delta between them: SDR, SAR, SIR.
+    Calculate multichannel speech enhancement metrics at an utterance level at the input stage, the output stage and the delta between them: SDR, SAR, SIR.
     
     Parameters
     ----------
@@ -82,28 +83,47 @@ def compute_metrics(params: dict)-> List[dict]:
     metrics_summary = []
     for i, microphone in enumerate(['Front-Left','Front-Right']):
         metrics_summary.append({
-            'sample'  : params['sample'],
-            'model'     : params['model'],
-            'gender'    : params['gender'],
-            'scenario'  : params['scenario'],
-            'microphone': microphone,
-            'sdr_in'    : round(sdr_in[i], 4),
-            'sdr_out'   : round(sdr_out[i], 4),
-            'sar_in'    : round(sar_in[i], 4),
-            'sar_out'   : round(sar_out[i], 4),
-            'sir_in'    : round(sir_in[i], 4),
-            'sir_out'   : round(sir_out[i], 4),
-            'delta_sdr' : round(sdr_out[i] - sdr_in[i], 4),
-            'delta_sar' : round(sar_out[i] - sar_in[i], 4),
-            'delta_sir' : round(sir_out[i] - sir_in[i], 4),
+            'sample'          : params['sample'],
+            'model'           : params['model'],
+            'gender'          : params['gender'],
+            'scenario'        : params['scenario'],
+            'microphone'      : microphone,
+            'phoneme_category': 'utterance',
+            'sdr_in'          : round(sdr_in[i], 4),
+            'sdr_out'         : round(sdr_out[i], 4),
+            'sar_in'          : round(sar_in[i], 4),
+            'sar_out'         : round(sar_out[i], 4),
+            'sir_in'          : round(sir_in[i], 4),
+            'sir_out'         : round(sir_out[i], 4),
+            'delta_sdr'       : round(sdr_out[i] - sdr_in[i], 4),
+            'delta_sar'       : round(sar_out[i] - sar_in[i], 4),
+            'delta_sir'       : round(sir_out[i] - sir_in[i], 4),
         })
-
+    
     return metrics_summary
+
+def compute_phoneme_level_metrics_per_speaker(params: dict)-> List[dict]:
+    """
+    Calculate multichannel speech enhancement metrics per speaker at a phoneme level at the input stage, the output stage and the delta between them: SDR, SAR, SIR.
+    
+    Parameters
+    ----------
+    
+        
+    Returns
+    -------
+    
+        
+    Notes
+    -----
+    
+    """ 
+    pass
 
 # Main execution block 
 if __name__ == '__main__':
-    # Example params dictionary with paths to the audio files and metadata
-    dataset_path = '/srv/storage/talc3@storage4.nancy.grid5000.fr/multispeech/calcul/users/nmonir/se-ph-eval-plus/'
+    # Utterance level evaluation for a single sample
+    """dataset_path = '/srv/storage/talc3@storage4.nancy.grid5000.fr/multispeech/calcul/users/nmonir/se-ph-eval-plus/'
     params = {
         'speech_path'              : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/reverberated_speech.wav'),
         'noise_path'               : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/reverberated_scaled_noise.wav'),
@@ -117,4 +137,4 @@ if __name__ == '__main__':
     }
 
     metrics_summary = compute_metrics(params)
-    print(metrics_summary)
+    print(metrics_summary)"""
