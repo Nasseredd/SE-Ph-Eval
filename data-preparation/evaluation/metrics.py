@@ -1,6 +1,14 @@
+#!/usr/bin/env python
+"""
+Calculate multichannel speech enhancement metrics at the input stage, the output stage and the delta between them: SDR, SAR, SIR.
+
+Author: Nasser-eddine Monir
+Update: 29.01.2024
+"""
 # import standard libraries
 import os
 import sys
+from typing import List
 
 # import third-party libraries
 import librosa
@@ -8,7 +16,7 @@ import numpy as np
 from mir_eval.separation import bss_eval_images
 
 # Compute metrics 
-def compute_metrics(params):
+def compute_metrics(params: dict)-> List[dict]:
     """
     Calculate multichannel speech enhancement metrics at the input stage, the output stage and the delta between them: SDR, SAR, SIR.
     
@@ -21,8 +29,9 @@ def compute_metrics(params):
         - 'noise_path': str, path to the noise audio file.
         - 'mixture_path': str, path to the mixture of speech and noise audio file.
         - 'estimated_speech_path': str, path to the estimated speech audio file.
-        - 'filename': str, the name of the audio file being evaluated.
+        - 'sample': str, the name of the audio file being evaluated.
         - 'model': str, the name of the model used for speech enhancement.
+        - 'gender': str, the gender of the speaker in the audio samples ('male' or 'female').
         - 'scenario': str, a description of the scenario or conditions under which the audio was processed.
         
     Returns
@@ -30,7 +39,7 @@ def compute_metrics(params):
     metrics_summary : list of dicts
         A list where each element is a dictionary containing the metrics for each microphone channel ('Front-Left', 'Front-Right').
         Each dictionary includes:
-        - 'filename': str, the name of the audio file.
+        - 'sample': str, the name of the audio file.
         - 'model': str, the model used for speech enhancement.
         - 'scenario': str, the scenario description.
         - 'microphone': str, the microphone channel.
@@ -73,8 +82,9 @@ def compute_metrics(params):
     metrics_summary = []
     for i, microphone in enumerate(['Front-Left','Front-Right']):
         metrics_summary.append({
-            'filename'  : params['filename'],
+            'sample'  : params['sample'],
             'model'     : params['model'],
+            'gender'    : params['gender'],
             'scenario'  : params['scenario'],
             'microphone': microphone,
             'sdr_in'    : round(sdr_in[i], 4),
@@ -95,13 +105,14 @@ if __name__ == '__main__':
     # Example params dictionary with paths to the audio files and metadata
     dataset_path = '/srv/storage/talc3@storage4.nancy.grid5000.fr/multispeech/calcul/users/nmonir/se-ph-eval-plus/'
     params = {
-        'speech_path'              : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/reverberated-speech.wav'),
-        'noise_path'               : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/reverberated-scaled-noise.wav'),
+        'speech_path'              : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/reverberated_speech.wav'),
+        'noise_path'               : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/reverberated_scaled_noise.wav'),
         'mixture_path'             : os.path.join(dataset_path, 'mix/female/ssn-m/0dBS0N45/121-121726-0000/mixture.wav'),
         'estimated_speech_path_ch0': os.path.join(dataset_path, 'estimated_speech/tango/female/ssn-m/0dBS0N45/121-121726-0000/estimated_speech_ch0.wav'),
         'estimated_speech_path_ch2': os.path.join(dataset_path, 'estimated_speech/tango/female/ssn-m/0dBS0N45/121-121726-0000/estimated_speech_ch2.wav'),
-        'filename'                 : '121-121726-0000',
+        'sample'                   : '121-121726-0000',
         'model'                    : 'tango',
+        'gender'                   : 'female',
         'scenario'                 : '0dBS0N45',
     }
 
