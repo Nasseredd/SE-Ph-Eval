@@ -8,7 +8,7 @@ Calculate multichannel speech enhancement metrics for:
     * all samples
 
 Author: Nasser-eddine Monir
-Update: 29.01.2024
+Update: 28.03.2024
 """
 # import standard libraries
 import os
