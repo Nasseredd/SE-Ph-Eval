@@ -8,7 +8,7 @@ import numpy as np
 from mir_eval.separation import bss_eval_images
 
 # Compute metrics 
-def metrics(params):
+def compute_metrics(params):
     """
     Calculate multichannel speech enhancement metrics at the input stage, the output stage and the delta between them: SDR, SAR, SIR.
     
@@ -105,5 +105,5 @@ if __name__ == '__main__':
         'scenario'                 : '0dBS0N45',
     }
 
-    metrics_summary = metrics(params)
+    metrics_summary = compute_metrics(params)
     print(metrics_summary)
