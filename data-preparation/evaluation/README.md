@@ -1,4 +1,4 @@
-# Project README: Speech Enhancement Metrics Computation
+# Speech Enhancement Metrics Computation
 
 This folder comprises two Python scripts, `metrics_all_samples.py` and `metrics.py`, designed to compute multichannel speech enhancement metrics for a specific dataset of audio samples. The metrics include Signal-to-Distortion Ratio (SDR), Signal-to-Artifacts Ratio (SAR), and Signal-to-Interference Ratio (SIR) for both mixture (input) and estimated speech (output) stages.
 
